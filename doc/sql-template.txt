@@ -1,0 +1,8 @@
+alter table table_name
+	add remark varchar(500) null comment '备注';
+
+alter table table_name
+	add gmt_create timestamp null comment '创建时间';
+
+alter table table_name
+	add gmt_update timestamp null comment '更新时间';
