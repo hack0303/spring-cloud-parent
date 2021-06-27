@@ -28,6 +28,7 @@
         <shardingsphere.version>5.0.0-alpha</shardingsphere.version>
         <hazelcast.version>4.1.2</hazelcast.version>
         <hutool.version>5.6.5</hutool.version>
+        <hikari.version>2.13.0</hikari.version>
     </properties>
 
     <profiles>
@@ -91,6 +92,11 @@
                 <artifactId>mybatis-plus</artifactId>
                 <version>${mybatis-plus.version}</version>
             </dependency>
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatis-plus.version}</version>
+            </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.shardingsphere/shardingsphere-jdbc-core -->
             <dependency>
                 <groupId>org.apache.shardingsphere</groupId>
@@ -108,6 +114,13 @@
                 <artifactId>hutool-all</artifactId>
                 <version>${hutool.version}</version>
             </dependency>
+            <!-- https://mvnrepository.com/artifact/hikari-cp/hikari-cp -->
+            <dependency>
+                <groupId>hikari-cp</groupId>
+                <artifactId>hikari-cp</artifactId>
+                <version>${hikari.version}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 
