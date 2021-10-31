@@ -27,7 +27,6 @@
         <mybatis-plus.version>3.4.3</mybatis-plus.version>
         <shardingsphere.version>5.0.0-alpha</shardingsphere.version>
         <hazelcast.version>4.1.2</hazelcast.version>
-        <hutool.version>5.6.5</hutool.version>
         <hikari.version>5.0.0</hikari.version>
         <!--
         <hikari.version>2.13.0</hikari.version>
@@ -149,11 +148,28 @@
     </dependencies>
     <repositories>
         <repository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>spring-milestones</id>
-            <name>Spring Milestones</name>
-            <url>https://repo.spring.io/milestone</url>
+            <url>http://repo.spring.io/milestone</url>
         </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>spring-snapshots</id>
+            <url>http://repo.spring.io/snapshot</url>
+        </pluginRepository>
+        <pluginRepository>
+            <id>spring-milestones</id>
+            <url>http://repo.spring.io/milestone</url>
+        </pluginRepository>
+    </pluginRepositories>
     <build>
         <defaultGoal>install</defaultGoal>
 
