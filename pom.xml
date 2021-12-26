@@ -29,6 +29,7 @@
         <shardingsphere.version>5.0.0-alpha</shardingsphere.version>
         <hazelcast.version>4.1.2</hazelcast.version>
         <hikari.version>5.0.0</hikari.version>
+        <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <!--
         <hikari.version>2.13.0</hikari.version>
         -->
@@ -131,7 +132,11 @@
                 <artifactId>HikariCP</artifactId>
                 <version>${hikari.version}</version>
             </dependency>
-
+            <dependency>
+                <groupId>org.mapstruct</groupId>
+                <artifactId>mapstruct</artifactId>
+                <version>${org.mapstruct.version}</version>
+            </dependency>
 
         </dependencies>
     </dependencyManagement>
@@ -178,6 +183,13 @@
                 <configuration>
                     <source>1.8</source>
                     <target>1.8</target>
+                    <annotationProcessorPaths>
+                        <path>
+                            <groupId>org.mapstruct</groupId>
+                            <artifactId>mapstruct-processor</artifactId>
+                            <version>${org.mapstruct.version}</version>
+                        </path>
+                    </annotationProcessorPaths>
                 </configuration>
             </plugin>
             <plugin>
