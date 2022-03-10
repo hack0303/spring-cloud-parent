@@ -30,6 +30,7 @@
         <hazelcast.version>4.1.2</hazelcast.version>
         <hikari.version>5.0.0</hikari.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
+        <guava.version>31.1-jre</guava.version>
         <!--
         <hikari.version>2.13.0</hikari.version>
         -->
@@ -136,6 +137,22 @@
                 <groupId>org.mapstruct</groupId>
                 <artifactId>mapstruct</artifactId>
                 <version>${org.mapstruct.version}</version>
+            </dependency>
+            <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+            <dependency>
+                <groupId>com.google.guava</groupId>
+                <artifactId>guava</artifactId>
+                <version>${guava.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>3.0.0</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.xiaoymin</groupId>
+                <artifactId>knife4j-spring-ui</artifactId>
+                <version>3.0.3</version>
             </dependency>
 
         </dependencies>
