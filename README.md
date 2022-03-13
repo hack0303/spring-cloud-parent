@@ -1,2 +1,5 @@
 # spring-cloud-parent
-just parent
+## 核心组件
+spring-boot
+spring-cloud
+spring-alibaba
