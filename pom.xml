@@ -19,10 +19,10 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.8</java.version>
         <spring-cloud.version>2021.0.1</spring-cloud.version>
         <project.build.sourceEncoding>utf8</project.build.sourceEncoding>
         <zipkin.version>2.12.3</zipkin.version>
-        <springboot.admin>2.3.1</springboot.admin>
         <spring-cloud-alibaba.version>2021.0.1.0</spring-cloud-alibaba.version>
         <hutool.version>5.6.5</hutool.version>
         <mybatis-spring-boot-starter.version>2.2.2</mybatis-spring-boot-starter.version>
@@ -33,9 +33,11 @@
         <hikari.version>5.0.0</hikari.version>
         <org.mapstruct.version>1.4.2.Final</org.mapstruct.version>
         <guava.version>31.1-jre</guava.version>
+        <pagehelper-spring-boot-starter.version>1.4.1</pagehelper-spring-boot-starter.version>
         <!--
         <hikari.version>2.13.0</hikari.version>
         -->
+        <okhttp3.version>3.10.0</okhttp3.version>
     </properties>
 
     <profiles>
@@ -168,7 +170,22 @@
                 <artifactId>knife4j-spring-ui</artifactId>
                 <version>3.0.3</version>
             </dependency>
-
+            <!-- https://mvnrepository.com/artifact/com.github.pagehelper/pagehelper-spring-boot-starter -->
+            <dependency>
+                <groupId>com.github.pagehelper</groupId>
+                <artifactId>pagehelper-spring-boot-starter</artifactId>
+                <version>${pagehelper-spring-boot-starter.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>1.2.79</version>
+            </dependency>
+            <dependency>
+                <groupId>com.squareup.okhttp3</groupId>
+                <artifactId>okhttp</artifactId>
+                <version>${okhttp3.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
