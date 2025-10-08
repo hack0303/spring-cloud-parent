@@ -28,6 +28,7 @@
         <mybatis-spring-boot-starter.version>3.0.3</mybatis-spring-boot-starter.version>
         <mybatis-plus.version>3.5.5</mybatis-plus.version>
         <mybatis-plus-generator.version>3.5.5</mybatis-plus-generator.version>
+        <freemarker.version>2.3.32</freemarker.version>
         <shardingsphere.version>5.0.0-alpha</shardingsphere.version>
         <hazelcast.version>4.1.2</hazelcast.version>
         <hikari.version>5.0.0</hikari.version>
@@ -130,6 +131,11 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-boot-starter</artifactId>
                 <version>${mybatis-plus.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.freemarker</groupId>
+                <artifactId>freemarker</artifactId>
+                <version>${freemarker.version}</version> <!-- 请使用最新版本或与MyBatis Plus兼容的版本 -->
             </dependency>
             <!-- https://mvnrepository.com/artifact/org.apache.shardingsphere/shardingsphere-jdbc-core -->
             <dependency>

@@ -23,11 +23,24 @@
         <artifactId>mybatis-plus-boot-starter</artifactId>
     </dependency>
     
+    <!-- MyBatis Plus Generator (代码生成器) -->
+    <dependency>
+        <groupId>com.baomidou</groupId>
+        <artifactId>mybatis-plus-generator</artifactId>
+    </dependency>
+    
     <!-- 数据库驱动 (根据实际数据库选择) -->
     <dependency>
         <groupId>mysql</groupId>
         <artifactId>mysql-connector-java</artifactId>
         <version>8.0.33</version>
+    </dependency>
+    
+    <!-- 代码生成器模板引擎 -->
+    <dependency>
+        <groupId>org.freemarker</groupId>
+        <artifactId>freemarker</artifactId>
+        <version>2.3.32</version>
     </dependency>
     
     <!-- 或者使用其他数据库驱动 -->
@@ -178,12 +191,15 @@ public class MybatisPlusConfig {
 
 ### 7. 代码生成器配置
 
-创建代码生成器配置类：
+#### 完整的代码生成器配置类
 
 ```java
 import com.baomidou.mybatisplus.generator.FastAutoGenerator;
 import com.baomidou.mybatisplus.generator.config.OutputFile;
+import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+import com.baomidou.mybatisplus.generator.config.GlobalConfig;
+import com.baomidou.mybatisplus.generator.config.po.LikeTable;
 
 import java.util.Collections;
 
@@ -194,21 +210,201 @@ public class CodeGenerator {
                     builder.author("your_name") // 设置作者
                             .enableSwagger() // 开启 swagger 模式
                             .fileOverride() // 覆盖已生成文件
-                            .outputDir("D://"); // 指定输出目录
+                            .outputDir(System.getProperty("user.dir") + "/src/main/java"); // 指定输出目录
                 })
                 .packageConfig(builder -> {
                     builder.parent("com.yourpackage") // 设置父包名
                             .moduleName("system") // 设置父包模块名
-                            .pathInfo(Collections.singletonMap(OutputFile.xml, "D://")); // 设置mapperXml生成路径
+                            .entity("entity") // 实体类包名
+                            .service("service") // Service包名
+                            .serviceImpl("service.impl") // Service实现类包名
+                            .mapper("mapper") // Mapper包名
+                            .controller("controller") // Controller包名
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, 
+                                System.getProperty("user.dir") + "/src/main/resources/mapper")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("user") // 设置需要生成的表名
-                            .addTablePrefix("t_", "c_"); // 设置过滤表前缀
+                    builder.addInclude("user", "role", "permission") // 设置需要生成的表名
+                            .addTablePrefix("t_", "c_") // 设置过滤表前缀
+                            .entityBuilder() // 实体类配置
+                                .enableLombok() // 启用lombok
+                                .enableTableFieldAnnotation() // 启用字段注解
+                                .logicDeleteColumnName("deleted") // 逻辑删除字段名
+                                .versionColumnName("version") // 乐观锁字段名
+                            .serviceBuilder() // Service配置
+                                .formatServiceFileName("%sService") // Service接口文件名格式
+                                .formatServiceImplFileName("%sServiceImpl") // Service实现类文件名格式
+                            .controllerBuilder() // Controller配置
+                                .enableRestStyle() // 启用Rest风格
+                                .enableHyphenStyle(); // 启用驼峰转连字符
                 })
-                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
+                .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板
                 .execute();
     }
 }
+```
+
+#### 高级代码生成器配置（支持更多自定义）
+
+```java
+import com.baomidou.mybatisplus.generator.FastAutoGenerator;
+import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
+import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
+import com.baomidou.mybatisplus.generator.engine.FreemarkerTemplateEngine;
+
+import java.util.Collections;
+
+public class AdvancedCodeGenerator {
+    public static void main(String[] args) {
+        FastAutoGenerator.create("jdbc:mysql://localhost:3306/your_database", "username", "password")
+                // 全局配置
+                .globalConfig(builder -> {
+                    builder.author("your_name")
+                            .outputDir(System.getProperty("user.dir") + "/src/main/java")
+                            .enableSwagger()
+                            .fileOverride()
+                            .dateType(DateType.TIME_PACK)
+                            .commentDate("yyyy-MM-dd")
+                            .disableOpenDir(); // 生成后不打开文件夹
+                })
+                // 包配置
+                .packageConfig(builder -> {
+                    builder.parent("com.yourpackage")
+                            .moduleName("system")
+                            .entity("entity")
+                            .service("service")
+                            .serviceImpl("service.impl")
+                            .mapper("mapper")
+                            .controller("controller")
+                            .xml("mapper.xml")
+                            .pathInfo(Collections.singletonMap(OutputFile.xml, 
+                                System.getProperty("user.dir") + "/src/main/resources/mapper"));
+                })
+                // 策略配置
+                .strategyConfig(builder -> {
+                    builder.addInclude("user", "role", "permission") // 表名
+                            .addTablePrefix("t_", "sys_") // 过滤表前缀
+                            
+                            // 实体类策略配置
+                            .entityBuilder()
+                                .enableLombok()
+                                .enableTableFieldAnnotation()
+                                .naming(NamingStrategy.underline_to_camel)
+                                .columnNaming(NamingStrategy.underline_to_camel)
+                                .logicDeleteColumnName("deleted")
+                                .versionColumnName("version")
+                                .addTableFills(new TableFill("create_time", FieldFill.INSERT))
+                                .addTableFills(new TableFill("update_time", FieldFill.INSERT_UPDATE))
+                                .idType(IdType.AUTO)
+                            
+                            // Controller策略配置
+                            .controllerBuilder()
+                                .enableRestStyle()
+                                .enableHyphenStyle()
+                            
+                            // Service策略配置
+                            .serviceBuilder()
+                                .formatServiceFileName("%sService")
+                                .formatServiceImplFileName("%sServiceImpl")
+                            
+                            // Mapper策略配置
+                            .mapperBuilder()
+                                .enableBaseResultMap()
+                                .enableBaseColumnList()
+                                .formatMapperFileName("%sMapper")
+                                .formatXmlFileName("%sMapper");
+                })
+                // 模板配置
+                .templateConfig(builder -> {
+                    builder.entity("/templates/entity.java")
+                            .service("/templates/service.java")
+                            .serviceImpl("/templates/serviceImpl.java")
+                            .mapper("/templates/mapper.java")
+                            .xml("/templates/mapper.xml")
+                            .controller("/templates/controller.java");
+                })
+                // 注入配置
+                .injectionConfig(builder -> {
+                    builder.beforeOutputFile((tableInfo, objectMap) -> {
+                        System.out.println("tableInfo: " + tableInfo.getEntityName() + " objectMap: " + objectMap.size());
+                    });
+                })
+                .templateEngine(new FreemarkerTemplateEngine())
+                .execute();
+    }
+}
+```
+
+#### 使用 Maven 插件生成代码
+
+在子模块的 `pom.xml` 中添加插件配置：
+
+```xml
+<build>
+    <plugins>
+        <plugin>
+            <groupId>com.baomidou</groupId>
+            <artifactId>mybatis-plus-generator-maven-plugin</artifactId>
+            <version>3.5.5</version>
+            <configuration>
+                <configFile>src/main/resources/generator-config.yml</configurationFile>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+```
+
+创建 `src/main/resources/generator-config.yml`：
+
+```yaml
+# 代码生成器配置
+globalConfig:
+  # 输出目录
+  outputDir: src/main/java
+  # 作者
+  author: your_name
+  # 开启 swagger 模式
+  swagger2: true
+  # 文件覆盖
+  fileOverride: true
+
+packageConfig:
+  # 父包名
+  parent: com.yourpackage
+  # 实体类包名
+  entity: entity
+  # service包名
+  service: service
+  # serviceImpl包名
+  serviceImpl: service.impl
+  # mapper包名
+  mapper: mapper
+  # controller包名
+  controller: controller
+
+strategyConfig:
+  # 表名
+  include:
+    - user
+    - role
+    - permission
+  # 表前缀过滤
+  tablePrefix:
+    - t_
+    - sys_
+  entityLombokModel: true
+  restControllerStyle: true
+  controllerMappingHyphenStyle: true
+
+templateConfig:
+  # 禁用默认模板
+  entity: /templates/entity.java
+  service: /templates/service.java
+  serviceImpl: /templates/serviceImpl.java
+  mapper: /templates/mapper.java
+  xml: /templates/mapper.xml
+  controller: /templates/controller.java
 ```
 
 ## 常用功能
